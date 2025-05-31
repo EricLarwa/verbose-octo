@@ -1,4 +1,4 @@
-import ListItem from "./ListItem";
+import ListItem from './ListItem'
 
 interface List {
     list: ListItem[],
@@ -10,50 +10,47 @@ interface List {
 }
 
 export default class FullList implements List {
+
     static instance: FullList = new FullList()
-    
+
     private _list: ListItem[] = [];
+
     private constructor(_list: ListItem[] = []) {
         this._list = _list;
     }
-    removeItem(id: string): void {
-        this._list = this._list.filter(item => item.id !== id);
-        this.save();
-    }
 
     get list(): ListItem[] {
-        return this._list;
+        return this._list
     }
 
     load(): void {
-        const storedList: string | null = localStorage.getItem('todoList');
+        const storedList: string | null = localStorage.getItem("myList")
         if (typeof storedList !== "string") return
 
-        const parsedList: {_id: string, _item: string, _checked: boolean}[] = JSON.parse(storedList);
-
+        const parsedList: { _id: string, _item: string, _checked: boolean }[] = JSON.parse(storedList)
 
         parsedList.forEach(itemObj => {
-            const newListItem = new ListItem(itemObj._id, itemObj._item, itemObj._checked);
-            FullList.instance.addItem(newListItem);
+            const newListItem = new ListItem(itemObj._id, itemObj._item, itemObj._checked)
+            FullList.instance.addItem(newListItem)
         })
     }
 
     save(): void {
-        localStorage.setItem('todoList', JSON.stringify(this._list));
+        localStorage.setItem("myList", JSON.stringify(this._list))
     }
 
-    clearList():void {
-        this._list = [];
-        this.save();
+    clearList(): void {
+        this._list = []
+        this.save()
     }
 
     addItem(itemObj: ListItem): void {
-        this._list.push(itemObj);
-        this.save();
+        this._list.push(itemObj)
+        this.save()
     }
 
-    rempoveItem(id: string): void {
-        this._list = this._list.filter(item => item.id !== id);
-        this.save();
+    removeItem(id: string): void {
+        this._list = this._list.filter(item => item.id !== id)
+        this.save()
     }
 }
